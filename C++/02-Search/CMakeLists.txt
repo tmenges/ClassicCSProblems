@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.17)
-project(Search)
+project(02_Search)
 
 set(CMAKE_CXX_STANDARD 20)
 
@@ -21,7 +21,15 @@ if(NOT Boost_FOUND)
     message(FATAL_ERROR "Could not find boost!")
 endif()
 
-include_directories(${Boost_INCLUDE_DIRS})
+include_directories(. ${Boost_INCLUDE_DIRS})
 
-add_executable(Search main.cpp maze.cpp search.cpp dfs.h bfs.h)
-target_link_libraries(Search ${Boost_LIBRARIES})
+add_executable(02_Search
+        bfs.h
+        dfs.h
+        main.cpp
+        maze.cpp
+        maze.h
+        search.cpp
+        search.h)
+
+target_link_libraries(02_Search ${Boost_LIBRARIES})
