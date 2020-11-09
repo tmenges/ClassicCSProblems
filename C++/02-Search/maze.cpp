@@ -88,17 +88,19 @@ std::vector<MazeLocation> Maze::successors(MazeLocation ml) const {
 void Maze::mark(const std::vector<MazeLocation>& path) {
     for (auto maze_location : path) {
         _grid[maze_location.row()][maze_location.column()] = Cell::PATH;
-        _grid[_start.row()][_start.column()] = Cell::START;
-        _grid[_goal.row()][_goal.column()] = Cell::GOAL;
     }
+
+    _grid[_start.row()][_start.column()] = Cell::START;
+    _grid[_goal.row()][_goal.column()] = Cell::GOAL;
 }
 
 void Maze::clear(const std::vector<MazeLocation>& path) {
     for (auto maze_location : path) {
         _grid[maze_location.row()][maze_location.column()] = Cell::EMPTY;
-        _grid[_start.row()][_start.column()] = Cell::START;
-        _grid[_goal.row()][_goal.column()] = Cell::GOAL;
     }
+
+    _grid[_start.row()][_start.column()] = Cell::START;
+    _grid[_goal.row()][_goal.column()] = Cell::GOAL;
 }
 
 std::string Maze::to_string() const {
