@@ -4,12 +4,19 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 public class Dfs {
     private static final Logger logger = LogManager.getLogger(Dfs.class);
     private static final int MAX_STATES_EXPLORED = 20;
 
-    public static<T> Optional<Node<T>> depthFirstSearch(T initial, final Searchable<T> searchSpace) {
+    public static <T> Optional<Node<T>> depthFirstSearch(T initial, final Searchable<T> searchSpace) {
+
+        return depthFirstSearch(initial, searchSpace::isGoal, searchSpace::getSuccessors);
+    }
+
+    public static <T> Optional<Node<T>> depthFirstSearch(T initial, Predicate<T> isGoal, Function<T, List<T>> successors) {
 
         // frontier is where we've yet to go
         Deque<Node<T>> frontier = new ArrayDeque<>();
@@ -29,7 +36,7 @@ public class Dfs {
             statesExplored++;
 
             // if we found the goal, we're done
-            if (searchSpace.isGoal(currentState)) {
+            if (isGoal.test(currentState)) {
                 System.out.printf("Found goal. Explored %d states.\n", statesExplored);
                 return Optional.of(currentNode);
             }
@@ -40,7 +47,7 @@ public class Dfs {
             }
 
             // check where we can go next and haven't explored
-            for (T child : searchSpace.getSuccessors(currentState)) {
+            for (T child : successors.apply(currentState)) {
                 logger.debug("Child: {}", child);
                 if (explored.contains(child)) {
                     logger.debug("Child: {} has already been explored.", child);
